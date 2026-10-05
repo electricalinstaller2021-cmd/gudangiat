@@ -268,11 +268,11 @@
 
                     <!-- Filter Control Bar -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex flex-col xl:flex-row xl:items-center justify-between gap-3 shrink-0">
-                        <div class="flex flex-wrap items-center gap-2" id="category-filters">
-                            <button onclick="setCategory('Semua')" class="filter-btn active bg-slate-800 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors border border-transparent shadow-sm" data-cat="Semua">Semua</button>
-                            <button onclick="setCategory('Elektrikal')" class="filter-btn bg-white hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded text-sm font-medium border border-slate-200 transition-colors shadow-sm" data-cat="Elektrikal">Elektrikal</button>
-                            <button onclick="setCategory('Mekanikal')" class="filter-btn bg-white hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded text-sm font-medium border border-slate-200 transition-colors shadow-sm" data-cat="Mekanikal">Mekanikal</button>
-                            <button onclick="setCategory('Lain-lain')" class="filter-btn bg-white hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded text-sm font-medium border border-slate-200 transition-colors shadow-sm" data-cat="Lain-lain">Lain-lain</button>
+                        <div class="flex items-center gap-2" id="category-filters">
+                            <label for="categorySelect" class="text-xs font-bold text-slate-500 whitespace-nowrap"><i class="fa-solid fa-tags mr-1"></i> Jenis Barang</label>
+                            <select id="categorySelect" onchange="setCategory(this.value)" class="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg p-2 outline-none cursor-pointer min-w-[210px] shadow-sm">
+                                <option value="Semua">Semua Jenis Barang</option>
+                            </select>
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center gap-2 w-full xl:w-auto">
@@ -509,8 +509,9 @@
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Jenis Barang <span class="text-red-500">*</span></label>
-                            <input type="text" id="inputJenis" list="jenisList" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 p-2.5 outline-none" placeholder="Pilih atau ketik...">
-                            <datalist id="jenisList"><option value="Elektrikal"><option value="Mekanikal"><option value="Pneumatik"><option value="Consumable"><option value="Aksesoris"></datalist>
+                            <input type="text" id="inputJenis" list="jenisList" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 p-2.5 outline-none" placeholder="Contoh: Servo Communication Cable">
+                            <datalist id="jenisList"></datalist>
+                            <p class="mt-1 text-xs text-slate-400">Isi berdasarkan fungsi barang. Jenis baru akan otomatis masuk ke filter.</p>
                         </div>
                         <div id="stokAwalContainer">
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Stok Awal <span class="text-red-500">*</span></label>
@@ -581,7 +582,7 @@
                             <input type="text" id="modalSearchInput" onkeyup="applyModalFilters()" class="w-full bg-white border border-slate-200 text-slate-800 text-sm rounded focus:ring-1 focus:ring-blue-500 pl-8 p-2 outline-none" placeholder="Cari kode, nama, tipe...">
                         </div>
                         <div class="flex gap-2">
-                            <select id="modalCatFilter" onchange="applyModalFilters()" class="w-1/3 bg-white border border-slate-200 text-slate-600 text-xs rounded focus:ring-1 focus:ring-blue-500 p-2 outline-none cursor-pointer"><option value="Semua">Semua Kat</option><option value="Elektrikal">Elektrik</option><option value="Mekanikal">Mekanik</option><option value="Lain-lain">Lainnya</option></select>
+                            <select id="modalCatFilter" onchange="applyModalFilters()" class="w-1/3 bg-white border border-slate-200 text-slate-600 text-xs rounded focus:ring-1 focus:ring-blue-500 p-2 outline-none cursor-pointer"><option value="Semua">Semua Jenis</option></select>
                             <div class="flex w-2/3 border border-slate-200 rounded bg-white">
                                 <select id="modalDynType" onchange="populateModalDynValues()" class="w-2/5 border-r border-slate-200 bg-transparent text-slate-600 text-xs focus:ring-0 p-2 outline-none cursor-pointer"><option value="mesinArea">Mesin</option><option value="maker">Maker</option><option value="rak">Rak</option></select>
                                 <select id="modalDynValue" onchange="applyModalFilters()" class="w-3/5 bg-transparent text-slate-600 text-xs focus:ring-0 p-2 outline-none cursor-pointer"><option value="all">- Semua -</option></select>
@@ -671,9 +672,10 @@
         // --- Generator Data Awal (Dummy Data) ---
         function generateDummyData() {
             items = [
-                { id: 1, kode: "SP-E-001", maker: "Schneider", tipe: "MCB 3 Phase 10A", jenis: "Elektrikal", mesinArea: ["Mesin Depalletizer", "Mesin Forming"], rak: "A-01", minStok: 5, machineStocks: {"Mesin Depalletizer": 5, "Mesin Forming": 5} },
-                { id: 2, kode: "SP-M-045", maker: "SKF", tipe: "Bearing 6205 ZZ", jenis: "Mekanikal", mesinArea: ["Pompa Air WTP", "Mesin Depalletizer", "Mesin Filler"], rak: "B-12", minStok: 10, machineStocks: {"Pompa Air WTP": 4, "Mesin Depalletizer": 4, "Mesin Filler": 4} },
-                { id: 3, kode: "SP-P-012", maker: "Festo", tipe: "Silinder Pneumatik DSNU", jenis: "Pneumatik", mesinArea: ["Mesin Case Packer"], rak: "C-05", minStok: 2, machineStocks: {"Mesin Case Packer": 1} }
+                { id: 1, kode: "SP-E-001", maker: "Schneider", tipe: "MCB 3 Phase 10A", jenis: "Miniature Circuit Breaker", mesinArea: ["Mesin Depalletizer", "Mesin Forming"], rak: "A-01", minStok: 5, machineStocks: {"Mesin Depalletizer": 5, "Mesin Forming": 5} },
+                { id: 2, kode: "SP-M-045", maker: "SKF", tipe: "Bearing 6205 ZZ", jenis: "Ball Bearing", mesinArea: ["Pompa Air WTP", "Mesin Depalletizer", "Mesin Filler"], rak: "B-12", minStok: 10, machineStocks: {"Pompa Air WTP": 4, "Mesin Depalletizer": 4, "Mesin Filler": 4} },
+                { id: 3, kode: "SP-P-012", maker: "Festo", tipe: "Silinder Pneumatik DSNU", jenis: "Pneumatic Cylinder", mesinArea: ["Mesin Case Packer"], rak: "C-05", minStok: 2, machineStocks: {"Mesin Case Packer": 1} }
+                ,{ id: 4, kode: "SP-C-003", maker: "Mitsubishi", tipe: "MR-J3BUS03M", jenis: "Servo Communication Cable", mesinArea: ["Mesin Filler"], rak: "E-03", minStok: 2, machineStocks: {"Mesin Filler": 3} }
             ];
 
             const eMakers = ["Schneider", "Omron", "Mitsubishi", "Siemens", "ABB", "Autonics", "Chint"];
@@ -688,11 +690,11 @@
             for(let i = 1; i <= 200; i++) {
                 let mCountE = getRandomInt(1, 3); let mAreaE = []; let mStocksE = {};
                 for(let j=0; j<mCountE; j++) { let m = getRandom(mesinPool); if(!mAreaE.includes(m)) { mAreaE.push(m); mStocksE[m] = getRandomInt(0, 25); } }
-                items.push({ id: 1000 + i, kode: `SP-E-${(1000 + i).toString().substring(1)}`, maker: getRandom(eMakers), tipe: `${getRandom(eTypes)} ${getRandomInt(10,220)}V`, jenis: "Elektrikal", mesinArea: mAreaE, rak: `E-${getRandomInt(1,30)}`, minStok: getRandomInt(2, 10), machineStocks: mStocksE });
+                items.push({ id: 1000 + i, kode: `SP-E-${(1000 + i).toString().substring(1)}`, maker: getRandom(eMakers), tipe: `${getRandom(eTypes)} ${getRandomInt(10,220)}V`, jenis: getRandom(eTypes), mesinArea: mAreaE, rak: `E-${getRandomInt(1,30)}`, minStok: getRandomInt(2, 10), machineStocks: mStocksE });
 
                 let mCountM = getRandomInt(1, 3); let mAreaM = []; let mStocksM = {};
                 for(let j=0; j<mCountM; j++) { let m = getRandom(mesinPool); if(!mAreaM.includes(m)) { mAreaM.push(m); mStocksM[m] = getRandomInt(0, 25); } }
-                items.push({ id: 3000 + i, kode: `SP-M-${(1000 + i).toString().substring(1)}`, maker: getRandom(mMakers), tipe: `${getRandom(mTypes)} ${getRandomInt(10,100)}mm`, jenis: "Mekanikal", mesinArea: mAreaM, rak: `M-${getRandomInt(1,50)}`, minStok: getRandomInt(2, 10), machineStocks: mStocksM });
+                items.push({ id: 3000 + i, kode: `SP-M-${(1000 + i).toString().substring(1)}`, maker: getRandom(mMakers), tipe: `${getRandom(mTypes)} ${getRandomInt(10,100)}mm`, jenis: getRandom(mTypes), mesinArea: mAreaM, rak: `M-${getRandomInt(1,50)}`, minStok: getRandomInt(2, 10), machineStocks: mStocksM });
             }
 
             let now = new Date();
@@ -860,7 +862,7 @@
             const ctxCategory = document.getElementById('categoryChart').getContext('2d');
             categoryChartInstance = new Chart(ctxCategory, {
                 type: 'doughnut',
-                data: { labels: ['Elektrikal', 'Mekanikal', 'Lain-lain'], datasets: [{ data: [0,0,0], backgroundColor: ['#3B82F6', '#64748B', '#F59E0B'], borderWidth: 0 }] },
+                data: { labels: [], datasets: [{ data: [], backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#64748B', '#06B6D4'], borderWidth: 0 }] },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } } }
             });
         }
@@ -880,11 +882,13 @@
             document.getElementById('dash-total-in').innerText = totalIn;
             document.getElementById('dash-total-out').innerText = totalOut;
 
-            let kritisItems = [], cElektrikal = 0, cMekanikal = 0, cLain = 0;
+            let kritisItems = [];
+            const jenisCounts = {};
             items.forEach(item => {
                 let stok = getTotalStock(item);
                 if (stok <= item.minStok) kritisItems.push({ item: item, stok: stok });
-                if(item.jenis === 'Elektrikal') cElektrikal++; else if(item.jenis === 'Mekanikal') cMekanikal++; else cLain++;
+                const jenis = (item.jenis || 'Belum ditentukan').trim();
+                jenisCounts[jenis] = (jenisCounts[jenis] || 0) + 1;
             });
             document.getElementById('dash-total-kritis').innerText = kritisItems.length;
 
@@ -944,7 +948,12 @@
             if(activeBorrows.length === 0) borrowHtml = '<li class="p-5 text-center text-slate-400 italic text-sm">Tidak ada part yang sedang dipinjam.</li>';
             ulBorrowed.innerHTML = borrowHtml;
 
-            if(categoryChartInstance) { categoryChartInstance.data.datasets[0].data = [cElektrikal, cMekanikal, cLain]; categoryChartInstance.update(); }
+            if(categoryChartInstance) {
+                const topJenis = Object.entries(jenisCounts).sort((a,b) => b[1] - a[1]).slice(0, 6);
+                categoryChartInstance.data.labels = topJenis.map(([jenis]) => jenis);
+                categoryChartInstance.data.datasets[0].data = topJenis.map(([, total]) => total);
+                categoryChartInstance.update();
+            }
 
             if(activityChartInstance) {
                 let days = document.getElementById('dashChartPeriod').value;
@@ -973,11 +982,7 @@
             let total = 0, aman = 0, kritis = 0, habis = 0;
             items.forEach(item => {
                 let matchCat = true;
-                if (currentFilter !== 'Semua') {
-                    if (currentFilter === 'Elektrikal') matchCat = item.jenis === 'Elektrikal';
-                    else if (currentFilter === 'Mekanikal') matchCat = item.jenis === 'Mekanikal';
-                    else if (currentFilter === 'Lain-lain') matchCat = (item.jenis !== 'Elektrikal' && item.jenis !== 'Mekanikal');
-                }
+                if (currentFilter !== 'Semua') matchCat = item.jenis === currentFilter;
                 if(!matchCat) return;
 
                 let isMatchDynamic = true;
@@ -1019,11 +1024,7 @@
             
             let filteredItems = items.filter(item => {
                 let match = true;
-                if (currentFilter !== 'Semua') {
-                    if (currentFilter === 'Elektrikal') match = item.jenis === 'Elektrikal';
-                    else if (currentFilter === 'Mekanikal') match = item.jenis === 'Mekanikal';
-                    else if (currentFilter === 'Lain-lain') match = (item.jenis !== 'Elektrikal' && item.jenis !== 'Mekanikal');
-                }
+                if (currentFilter !== 'Semua') match = item.jenis === currentFilter;
                 if (match && currentFilterValue !== 'all') {
                     if (currentFilterType === 'mesinArea') match = item.mesinArea.includes(currentFilterValue);
                     else if (currentFilterType === 'maker') match = item.maker === currentFilterValue;
@@ -1056,7 +1057,7 @@
                     let stokTampil = getRelevantStock(item);
                     let stockClass = stokTampil === 0 ? 'bg-red-100 text-red-700 border-red-200' : (stokTampil <= item.minStok ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200');
 
-                    let iconJenis = item.jenis === 'Elektrikal' ? '<i class="fa-solid fa-bolt text-amber-500"></i>' : (item.jenis === 'Mekanikal' ? '<i class="fa-solid fa-gear text-slate-500"></i>' : '<i class="fa-solid fa-box text-slate-400"></i>');
+                    let iconJenis = '<i class="fa-solid fa-tag text-blue-500"></i>';
 
                     let mesinTags = '';
                     if (currentFilterType === 'mesinArea' && currentFilterValue !== 'all') {
@@ -1192,7 +1193,7 @@
             
             let filtered = items.filter(item => {
                 let match = true;
-                if (cat !== 'Semua') { match = (cat === 'Lain-lain') ? (item.jenis !== 'Elektrikal' && item.jenis !== 'Mekanikal') : item.jenis === cat; }
+                if (cat !== 'Semua') match = item.jenis === cat;
                 if (match && dynVal !== 'all') { match = (dynType === 'mesinArea') ? item.mesinArea.includes(dynVal) : (dynType === 'maker' ? item.maker === dynVal : item.rak === dynVal); }
                 if (match && q) match = item.kode.toLowerCase().includes(q) || item.maker.toLowerCase().includes(q) || item.tipe.toLowerCase().includes(q);
                 return match;
@@ -1568,11 +1569,28 @@
         // --- STREAMING_CHUNK:Filter and UI Handlers... ---
         function setCategory(cat) {
             currentFilter = cat;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if(btn.dataset.cat === cat) { btn.classList.add('bg-slate-800', 'text-white', 'border-transparent'); btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200'); } 
-                else { btn.classList.remove('bg-slate-800', 'text-white', 'border-transparent'); btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200'); }
-            });
+            const select = document.getElementById('categorySelect');
+            if (select) select.value = cat;
             renderCards(); renderTable();
+        }
+
+        function populateJenisOptions() {
+            const values = [...new Set(items.map(item => (item.jenis || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b, 'id'));
+            const categorySelect = document.getElementById('categorySelect');
+            const modalCatFilter = document.getElementById('modalCatFilter');
+            const jenisList = document.getElementById('jenisList');
+            if (categorySelect) {
+                const selected = values.includes(currentFilter) ? currentFilter : 'Semua';
+                categorySelect.innerHTML = '<option value="Semua">Semua Jenis Barang</option>' + values.map(v => `<option value="${v}">${v}</option>`).join('');
+                categorySelect.value = selected;
+                currentFilter = selected;
+            }
+            if (modalCatFilter) {
+                const selected = modalCatFilter.value;
+                modalCatFilter.innerHTML = '<option value="Semua">Semua Jenis</option>' + values.map(v => `<option value="${v}">${v}</option>`).join('');
+                modalCatFilter.value = values.includes(selected) ? selected : 'Semua';
+            }
+            if (jenisList) jenisList.innerHTML = values.map(v => `<option value="${v}"></option>`).join('');
         }
 
         function setStatFilter(stat) { currentStatFilter = stat; renderCards(); renderTable(); }
@@ -1601,6 +1619,7 @@
         }
 
         function triggerUIUpdate() {
+            populateJenisOptions();
             populateFilterValues(); renderCards(); renderTable(); updateBorrowedBadgeCount();
             if(!document.getElementById('historyModal').classList.contains('hidden')) renderHistory();
             updateDashboardData(); updateHistoryMachineDropdown();
@@ -1666,10 +1685,36 @@
             setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 3500);
         }
 
+        function inferJenisBarang(tipe, jenisLama) {
+            const nama = String(tipe || '').trim();
+            const teks = nama.toLowerCase();
+            const lama = String(jenisLama || '').trim();
+            const kategoriLama = ['elektrikal', 'mekanikal', 'pneumatik', 'consumable', 'aksesoris', 'lain-lain', 'lainnya'];
+            if (lama && !kategoriLama.includes(lama.toLowerCase())) return lama;
+            if (/mr-j3bus|servo.*(cable|kabel)|communication.*(cable|kabel)/i.test(nama)) return 'Servo Communication Cable';
+            if (teks.includes('bearing')) return 'Ball Bearing';
+            if (teks.includes('pneumatic cylinder') || teks.includes('silinder pneumatik')) return 'Pneumatic Cylinder';
+            if (teks.includes('solenoid valve')) return 'Solenoid Valve';
+            if (teks.includes('sensor proximity')) return 'Proximity Sensor';
+            if (teks.includes('limit switch')) return 'Limit Switch';
+            if (teks.includes('push button')) return 'Push Button';
+            if (teks.includes('plc')) return 'PLC Module';
+            if (teks.includes('inverter')) return 'Inverter';
+            if (teks.includes('relay')) return 'Relay';
+            if (teks.includes('contactor')) return 'Contactor';
+            if (teks.includes('v-belt')) return 'V-Belt';
+            if (teks.includes('sprocket')) return 'Sprocket';
+            if (teks.includes('gearbox')) return 'Gearbox';
+            if (teks.includes('linear guide')) return 'Linear Guide';
+            if (teks.includes('mcb')) return 'Miniature Circuit Breaker';
+            return nama || 'Belum ditentukan';
+        }
+
         function normalizeCloudData(data) {
             const arr = (v) => Array.isArray(v) ? v : [];
             const cleanItems = arr(data.items).map(it => ({
                 ...it,
+                jenis: inferJenisBarang(it.tipe, it.jenis),
                 id: Number(it.id),
                 minStok: Number(it.minStok) || 0,
                 mesinArea: arr(it.mesinArea),
@@ -1806,9 +1851,9 @@
                                 </tr>
                             </thead>
                             <tbody class="text-slate-700">
-                                <tr class="border-t border-slate-100"><td class="px-3 py-1.5">Schneider</td><td class="px-3 py-1.5">MCB 3 Phase 10A</td><td class="px-3 py-1.5">Elektrikal</td><td class="px-3 py-1.5">A-01</td><td class="px-3 py-1.5">5</td><td class="px-3 py-1.5">Mesin Filler</td><td class="px-3 py-1.5">8</td></tr>
-                                <tr class="border-t border-slate-100 bg-slate-50"><td class="px-3 py-1.5">Schneider</td><td class="px-3 py-1.5">MCB 3 Phase 10A</td><td class="px-3 py-1.5">Elektrikal</td><td class="px-3 py-1.5">A-01</td><td class="px-3 py-1.5">5</td><td class="px-3 py-1.5">Mesin Forming</td><td class="px-3 py-1.5">3</td></tr>
-                                <tr class="border-t border-slate-100"><td class="px-3 py-1.5">SKF</td><td class="px-3 py-1.5">Bearing 6205 ZZ</td><td class="px-3 py-1.5">Mekanikal</td><td class="px-3 py-1.5">B-12</td><td class="px-3 py-1.5">10</td><td class="px-3 py-1.5">Pompa Air WTP</td><td class="px-3 py-1.5">12</td></tr>
+                                <tr class="border-t border-slate-100"><td class="px-3 py-1.5">Schneider</td><td class="px-3 py-1.5">MCB 3 Phase 10A</td><td class="px-3 py-1.5">Miniature Circuit Breaker</td><td class="px-3 py-1.5">A-01</td><td class="px-3 py-1.5">5</td><td class="px-3 py-1.5">Mesin Filler</td><td class="px-3 py-1.5">8</td></tr>
+                                <tr class="border-t border-slate-100 bg-slate-50"><td class="px-3 py-1.5">Mitsubishi</td><td class="px-3 py-1.5">MR-J3BUS03M</td><td class="px-3 py-1.5">Servo Communication Cable</td><td class="px-3 py-1.5">A-01</td><td class="px-3 py-1.5">5</td><td class="px-3 py-1.5">Mesin Forming</td><td class="px-3 py-1.5">3</td></tr>
+                                <tr class="border-t border-slate-100"><td class="px-3 py-1.5">SKF</td><td class="px-3 py-1.5">Bearing 6205 ZZ</td><td class="px-3 py-1.5">Ball Bearing</td><td class="px-3 py-1.5">B-12</td><td class="px-3 py-1.5">10</td><td class="px-3 py-1.5">Pompa Air WTP</td><td class="px-3 py-1.5">12</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1817,7 +1862,7 @@
                         <p>1. Baris pertama <b>wajib</b> berisi nama kolom (header) seperti contoh di atas.</p>
                         <p>2. Satu baris = <b>satu barang pada satu mesin/area</b>. Jika 1 barang ada di 3 mesin, buat 3 baris dengan MAKER dan TIPE yang sama.</p>
                         <p>3. Alternatif satu baris: isi <code class="bg-slate-100 px-1 rounded">MESIN_AREA</code> = <code class="bg-slate-100 px-1 rounded">Mesin Filler:8; Mesin Forming:3</code> lalu kolom STOK boleh dikosongkan.</p>
-                        <p>4. <b>JENIS</b> gunakan: Elektrikal, Mekanikal, Pneumatik, atau kategori lain yang dipakai di sistem.</p>
+                        <p>4. <b>JENIS</b> isi berdasarkan fungsi barang, misalnya Servo Communication Cable, Ball Bearing, atau Pneumatic Cylinder.</p>
                         <p>5. Kolom <b>KODE tidak perlu diisi</b> — kode barang dibuat otomatis oleh sistem. Kolom <b>TIPE</b> wajib diisi. MIN_STOK dan STOK harus angka (kosong dianggap 0).</p>
                         <p>6. Nama kolom bebas huruf besar/kecil dan boleh pakai spasi (contoh: "Min Stok", "Mesin / Area", "Nama Barang").</p>
                     </div>
@@ -1876,10 +1921,10 @@
 
         const IMPORT_TEMPLATE_HEADERS = ["MAKER","TIPE","JENIS","RAK","MIN_STOK","MESIN_AREA","STOK"];
         const IMPORT_TEMPLATE_ROWS = [
-            ["Schneider","MCB 3 Phase 10A","Elektrikal","A-01",5,"Mesin Filler",8],
-            ["Schneider","MCB 3 Phase 10A","Elektrikal","A-01",5,"Mesin Forming",3],
-            ["SKF","Bearing 6205 ZZ","Mekanikal","B-12",10,"Pompa Air WTP",12],
-            ["Festo","Silinder Pneumatik DSNU","Pneumatik","C-05",2,"Mesin Case Packer:4; Conveyor Line A:2",""]
+            ["Schneider","MCB 3 Phase 10A","Miniature Circuit Breaker","A-01",5,"Mesin Filler",8],
+            ["Mitsubishi","MR-J3BUS03M","Servo Communication Cable","E-03",2,"Mesin Filler",3],
+            ["SKF","Bearing 6205 ZZ","Ball Bearing","B-12",10,"Pompa Air WTP",12],
+            ["Festo","Silinder Pneumatik DSNU","Pneumatic Cylinder","C-05",2,"Mesin Case Packer:4; Conveyor Line A:2",""]
         ];
 
         function openImportModal() {
